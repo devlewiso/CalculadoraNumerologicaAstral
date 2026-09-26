@@ -1,6 +1,6 @@
 # Calculadora Numerológica de Nombres
 
-Este proyecto es una calculadora numerológica que, basándose en el nombre ingresado por el usuario, calcula su valor numerológico y proporciona un significado asociado a dicho número. La interfaz web está diseñada con un fondo animado de estrellas y una temática astral.
+Este proyecto es una calculadora numerológica que, basándose en el nombre ingresado por el usuario, calcula su valor numerológico y proporciona un significado asociado a dicho número. La interfaz web tiene una temática celestial, una imagen generada con IA y un diseño adaptable a móviles.
 
 ## Descripción del Proyecto
 
@@ -27,7 +27,9 @@ La calculadora toma el nombre ingresado por el usuario, convierte cada letra en 
 
 - **Calcular valor numerológico**: Convierte el nombre ingresado en un valor numerológico.
 - **Mostrar significado**: Muestra el significado del número calculado.
-- **Animación de estrellas**: Fondo animado que simula un cielo estrellado.
+- **Diseño responsive**: Portada celestial, resultados accesibles y banner de KIE AI con enlace de afiliado.
+- **Privacidad**: Cálculo local, sin almacenar nombres.
+- **Normalización**: Admite acentos y ñ, rechaza entradas sin letras y conserva números maestros en cada reducción.
 
 ## Tabla Alfanumérica
 
@@ -65,8 +67,9 @@ Cada número tiene un significado específico:
 ## Estructura del Proyecto
 
 - **index.html**: Archivo principal con la estructura HTML.
-- **styles.css**: Archivo de estilos CSS (incluido en el `<style>` dentro del HTML).
-- **script.js**: Lógica de cálculo y animación (incluido en el `<script>` dentro del HTML).
+- **styles.css**: Estilos responsive; tipografías de Google Fonts con alternativas locales.
+- **app.js**: Cálculo, validación e interpretación.
+- **assets/celestial-banner.png**: Imagen original generada para la portada y el banner.
 
 ## Contribuir
 

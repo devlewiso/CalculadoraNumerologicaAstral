@@ -1,193 +1,50 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Numerológica de Nombres</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: 'Arial', sans-serif;
-            overflow: hidden;
-            background-color: #0a0a2a;
-            color: #fff;
-        }
-        #stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-        .container {
-            position: relative;
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 2rem;
-            background-color: rgba(20, 20, 50, 0.8);
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #ffd700;
-            font-size: 2.5em;
-            margin-bottom: 30px;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-        input, button {
-            display: block;
-            width: 100%;
-            margin: 15px 0;
-            padding: 12px;
-            font-size: 1rem;
-            box-sizing: border-box;
-            border-radius: 5px;
-            border: none;
-        }
-        input {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: #fff;
-        }
-        button {
-            background-color: #ffd700;
-            color: #0a0a2a;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: bold;
-        }
-        button:hover {
-            background-color: #ffec8b;
-            box-shadow: 0 0 15px #ffd700;
-        }
-        #resultado {
-            margin-top: 30px;
-            text-align: left;
-            background-color: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 10px;
-        }
-        #valorNumerico {
-            font-size: 1.4em;
-            font-weight: bold;
-            color: #ffd700;
-            text-align: center;
-            margin-bottom: 20px;
-            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-        }
-        #significado {
-            text-align: justify;
-            line-height: 1.6;
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#100e18">
+  <meta name="description" content="Descubre el significado numerológico de tu nombre. Explora tu número de expresión y los números maestros con nuestra calculadora gratuita.">
+  <title>Astral — Calculadora Numerológica de Nombres</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preload" as="image" href="assets/celestial-banner.png">
+  <script src="app.js" defer></script>
 </head>
 <body>
-    <canvas id="stars"></canvas>
-    <div class="container">
-        <h1>Calculadora Numerológica Astral</h1>
-        <input type="text" id="nombreInput" placeholder="Ingresa tu nombre">
-        <button onclick="calcularValorNumerologico()">Revelar Tu Número</button>
-        <div id="resultado">
-            <div id="valorNumerico"></div>
-            <div id="significado"></div>
-        </div>
-    </div>
-
-    <script>
-        const significados = {
-            1: "El Líder: Representa independencia, originalidad y confianza. Eres una persona pionera, ambiciosa y con fuerte individualidad. Tienes habilidades de liderazgo y te gusta iniciar nuevos proyectos. Tu desafío es equilibrar tu independencia con la cooperación.",
-            2: "El Mediador: Simboliza cooperación, diplomacia y sensibilidad. Eres paciente, adaptable y tienes grandes habilidades para trabajar en equipo. Tu intuición es fuerte y eres excelente para mediar conflictos. Tu reto es desarrollar confianza en ti mismo y evitar la indecisión.",
-            3: "El Comunicador: Representa creatividad, expresión y optimismo. Eres sociable, carismático y tienes talento artístico. Tu entusiasmo es contagioso y tienes facilidad para inspirar a otros. Tu desafío es mantener el enfoque y la disciplina en tus proyectos.",
-            4: "El Constructor: Simboliza estabilidad, practicidad y confiabilidad. Eres trabajador, organizado y te caracterizas por tu honestidad. Tienes habilidad para construir bases sólidas en cualquier proyecto. Tu reto es encontrar flexibilidad y no ser demasiado rígido.",
-            5: "El Aventurero: Representa libertad, cambio y versatilidad. Eres adaptable, curioso y amas la aventura. Tienes una mente ágil y aprendes rápidamente. Tu desafío es encontrar un equilibrio entre tu deseo de libertad y la necesidad de estabilidad.",
-            6: "El Nutridor: Simboliza responsabilidad, armonía y amor. Eres compasivo, protector y te preocupas genuinamente por los demás. Tienes un fuerte sentido de la justicia y la belleza. Tu reto es no cargar con demasiadas responsabilidades y aprender a cuidar de ti mismo.",
-            7: "El Místico: Representa análisis, sabiduría y espiritualidad. Eres intelectual, introspectivo y buscas constantemente el conocimiento profundo. Tienes una mente analítica y te atraen los misterios de la vida. Tu desafío es equilibrar tu vida interior con el mundo exterior.",
-            8: "El Ejecutivo: Simboliza poder, abundancia y autoridad. Eres ambicioso, eficiente y tienes grandes habilidades para los negocios y la gestión. Tienes la capacidad de lograr grandes metas materiales. Tu reto es usar tu poder de manera ética y equilibrada.",
-            9: "El Humanitario: Representa compasión, idealismo y sabiduría universal. Eres generoso, tolerante y tienes una perspectiva global. Tu misión es servir a la humanidad de alguna manera. Tu desafío es aprender a poner límites y no sacrificarte demasiado por otros.",
-            11: "El Iluminado: Número maestro que representa intuición elevada, inspiración y liderazgo espiritual. Tienes un gran potencial para elevar la conciencia de otros. Tu desafío es manejar la alta sensibilidad y las expectativas que conlleva este número.",
-            22: "El Constructor Maestro: Número maestro que simboliza la capacidad de manifestar grandes ideas en el mundo material. Tienes el potencial de lograr cosas extraordinarias que beneficien a muchos. Tu reto es no sucumbir ante la presión de este gran potencial.",
-            33: "El Maestro Instructor: El más raro de los números maestros, representa compasión y enseñanza a nivel global. Tienes un potencial único para elevar la conciencia de la humanidad a través del amor y la sabiduría. Tu desafío es vivir a la altura de este alto ideal sin agotarte."
-        };
-
-        function calcularValorNumerologico() {
-            const nombre = document.getElementById('nombreInput').value.toLowerCase();
-            const tablaAlfaNumerica = {
-                'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7, 'h': 8, 'i': 9,
-                'j': 1, 'k': 2, 'l': 3, 'm': 4, 'n': 5, 'ñ': 5, 'o': 6, 'p': 7, 'q': 8,
-                'r': 9, 's': 1, 't': 2, 'u': 3, 'v': 4, 'w': 5, 'x': 6, 'y': 7, 'z': 8
-            };
-            
-            let suma = 0;
-            for (let letra of nombre) {
-                if (tablaAlfaNumerica.hasOwnProperty(letra)) {
-                    suma += tablaAlfaNumerica[letra];
-                }
-            }
-            
-            // Mantenemos los números maestros 11, 22 y 33
-            if (suma !== 11 && suma !== 22 && suma !== 33) {
-                while (suma > 9) {
-                    suma = suma.toString().split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
-                }
-            }
-            
-            document.getElementById('valorNumerico').innerHTML = `El valor numerológico de tu nombre es: ${suma}`;
-            document.getElementById('significado').innerHTML = `Significado: ${significados[suma] || "Este número no tiene un significado específico en nuestra base de datos."}`;
-        }
-
-        // Animación de estrellas
-        const canvas = document.getElementById('stars');
-        const ctx = canvas.getContext('2d');
-        let width, height;
-
-        function setCanvasSize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-
-        setCanvasSize();
-        window.addEventListener('resize', setCanvasSize);
-
-        const stars = [];
-        for (let i = 0; i < 200; i++) {
-            stars.push({
-                x: Math.random() * width,
-                y: Math.random() * height,
-                radius: Math.random() * 1.5,
-                vx: Math.floor(Math.random() * 50) - 25,
-                vy: Math.floor(Math.random() * 50) - 25
-            });
-        }
-
-        function draw() {
-            ctx.clearRect(0, 0, width, height);
-            ctx.globalCompositeOperation = "lighter";
-
-            for (let i = 0, x = stars.length; i < x; i++) {
-                const s = stars[i];
-
-                ctx.fillStyle = "#fff";
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, s.radius, 0, 2 * Math.PI);
-                ctx.fill();
-
-                s.x += s.vx / 30;
-                s.y += s.vy / 30;
-
-                if (s.x < 0 || s.x > width) s.vx = -s.vx;
-                if (s.y < 0 || s.y > height) s.vy = -s.vy;
-            }
-        }
-
-        function animate() {
-            draw();
-            requestAnimationFrame(animate);
-        }
-
-        animate();
-    </script>
+  <a class="skip-link" href="#calculadora">Saltar a la calculadora</a>
+  <header class="header wrap">
+    <a href="#inicio" class="brand" aria-label="Astral, inicio"><span class="brand-symbol" aria-hidden="true">✳</span> astral<span class="brand-dot">.</span></a>
+    <nav aria-label="Navegación principal"><a href="#calculadora">Calculadora</a><a href="#como-funciona">Cómo funciona</a><a href="#numeros">Los números</a></nav>
+    <span class="header-note">UN UNIVERSO EN TU NOMBRE <span aria-hidden="true">✧</span></span>
+  </header>
+  <main id="inicio">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <img class="hero-art" src="assets/celestial-banner.png" alt="Esfera astral de oro entre estrellas y nubes violetas" width="1536" height="1024" fetchpriority="high">
+      <div class="hero-shade"></div>
+      <div class="hero-copy"><p class="eyebrow"><span></span> NUMEROLOGÍA & AUTOCONOCIMIENTO</p>
+        <h1 id="hero-title">Tu nombre tiene<br>una historia.<br><em>Descubre su energía.</em></h1>
+        <p class="hero-description">Hay un universo de significados en cada letra.<br>Explora lo que la numerología cuenta sobre ti.</p>
+        <a class="button gold" href="#calculadora">Descubrir mi número <span aria-hidden="true">↗</span></a>
+        <div class="hero-details"><span>✧ Gratis y sin registro</span><span>◈ Tus datos se quedan contigo</span></div>
+      </div>
+      <span class="hero-caption">ASÍ COMO LAS ESTRELLAS, CADA NOMBRE ES ÚNICO.</span>
+    </section>
+    <div class="section-heading wrap" id="calculadora"><div><p class="eyebrow">01 / TU MAPA PERSONAL</p><h2>Todo comienza con tu nombre.</h2></div><p>Una pequeña pausa para conocerte un poco más.</p></div>
+    <section class="calculator wrap" aria-label="Calculadora numerológica">
+      <div class="form-panel"><span class="small-star" aria-hidden="true">✧</span><h3>Encuentra tu número</h3><p>Escribe tu nombre completo para descubrir su significado numerológico.</p>
+        <form id="name-form" novalidate><label for="nombreInput">Tu nombre completo</label><input id="nombreInput" name="nombre" type="text" placeholder="Ej. María Fernanda López" autocomplete="name" maxlength="150" aria-describedby="name-hint form-error"><p id="name-hint" class="hint">Usa el nombre con el que te identificas.</p><p id="form-error" class="error" role="alert"></p><button class="button gold" type="submit">Revelar mi número <span aria-hidden="true">✧</span></button></form>
+        <p class="privacy"><span aria-hidden="true">◈</span> El cálculo se realiza en tu dispositivo. No guardamos tu nombre.</p>
+      </div>
+      <div class="result-panel" id="resultado" aria-live="polite" aria-atomic="true">
+        <div id="result-empty"><div class="orbit" aria-hidden="true"><span>✦</span><i>✧</i></div><p class="eyebrow">EL INICIO DE UN DESCUBRIMIENTO</p><h3>Tu esencia está por revelarse</h3><p>Tu número y su interpretación aparecerán aquí.<br>Solo hace falta un nombre para comenzar.</p><div class="tiny-stars" aria-hidden="true">✧ · ✦ · ✧</div></div>
+        <div id="result-content" hidden tabindex="-1"><p class="eyebrow" id="result-type"></p><div id="valorNumerico"></div><p id="result-name"></p><h3 id="result-title"></h3><p id="significado"></p><details><summary>Ver cómo se calculó</summary><p id="calculation"></p></details></div>
+      </div>
+    </section>
+    <section class="how wrap" id="como-funciona"><div class="section-heading"><div><p class="eyebrow">02 / LA CONEXIÓN ENTRE LETRAS Y NÚMEROS</p><h2>Un nombre. Muchas posibilidades.</h2></div></div><div class="steps"><article><span class="step-number">01</span><h3>Cada letra cuenta</h3><p>Asignamos a cada letra un valor del 1 al 9 según la tabla pitagórica. Los acentos se normalizan y la ñ equivale a la n.</p></article><article><span class="step-number">02</span><h3>Encontramos tu número</h3><p>Sumamos sus valores y reducimos el resultado, conservando los números maestros 11, 22 y 33 en cada paso.</p></article><article><span class="step-number">03</span><h3>Explora su significado</h3><p>Descubre las cualidades simbólicas de tu número. Una invitación a reflexionar y mirarte desde otra perspectiva.</p></article></div></section>
+    <aside class="affiliate wrap" aria-labelledby="affiliate-title"><img src="assets/celestial-banner.png" alt="" loading="lazy" width="1536" height="1024"><div class="affiliate-shade"></div><div class="affiliate-copy"><p class="eyebrow">ESPACIO PATROCINADO <span>·</span> KIE AI</p><h2 id="affiliate-title">Tu imaginación no tiene límites.<br><em>Dale vida con IA.</em></h2><p>Del universo de las ideas a tu próxima creación.<br>Explora las posibilidades de KIE AI.</p><a href="https://kie.ai?ref=538b343ce64a7b9e5823c3b8ad471121" target="_blank" rel="sponsored noopener noreferrer" class="button gold">Explorar KIE AI <span aria-hidden="true">↗</span></a><small>Enlace de afiliado: podemos recibir una comisión si realizas una compra.</small></div><div class="affiliate-mark" aria-hidden="true">KIE<span>AI</span><small>IMAGINA. CREA. EXPLORA.</small></div></aside>
+    <section class="numbers wrap" id="numeros"><div><p class="eyebrow">03 / UN LENGUAJE SIMBÓLICO</p><h2>Cada número, una esencia.</h2><p>Del impulso de comenzar a la sabiduría de compartir.<br>Tu resultado es una puerta a la reflexión.</p></div><div class="number-grid"><span><b>1</b>Liderazgo</span><span><b>2</b>Armonía</span><span><b>3</b>Expresión</span><span><b>4</b>Estabilidad</span><span><b>5</b>Libertad</span><span><b>6</b>Cuidado</span><span><b>7</b>Introspección</span><span><b>8</b>Ambición</span><span><b>9</b>Compasión</span><span class="master"><b>11</b>Intuición</span><span class="master"><b>22</b>Construcción</span><span class="master"><b>33</b>Enseñanza</span></div></section>
+    <p class="disclaimer wrap">✧ La numerología es una práctica simbólica de entretenimiento y reflexión; no es una ciencia ni determina tu personalidad o tu futuro.</p>
+  </main>
+  <footer class="wrap"><a href="#inicio" class="brand">✳ astral.</a><p>Un espacio para la curiosidad y el autoconocimiento.</p><a href="#calculadora">Vuelve a descubrirte ↑</a></footer>
 </body>
 </html>
