@@ -35,6 +35,8 @@ form.addEventListener('submit', event => {
     if (!resultado) {
         error.textContent = 'Escribe un nombre con letras para descubrir tu número.';
         input.setAttribute('aria-invalid', 'true');
+        document.getElementById('result-content').hidden = true;
+        document.getElementById('result-empty').hidden = false;
         input.focus();
         return;
     }
